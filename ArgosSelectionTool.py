@@ -38,6 +38,7 @@ while lineString != "": #loop through line list, skip header line
     timestamp = line_data[2]  # Observation date ("timestamp")
     lc  = line_data[14]        # Observation location class ("argos:lc")
     if lc not in ['"1"', '"2"', '"3"']:
+        lineString = f.readline()  #update line string; continue to next line 
         continue #skip records that don't have coordinate info
     lat = float(line_data[4])        # Observation latitude  ("location-lat")
     lon = float(line_data[3])        # Observation longitude ("location-lon")
