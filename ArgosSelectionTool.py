@@ -9,12 +9,12 @@
 # Date:   Fall 2026
 #--------------------------------------------------------------
 
-# Create the geographic selection box
+# Create the geogrpahic selection box
 the_box = {
-    'x_min' : 34.00,
-    'y_min' : -76.00,
-    'x_max' : 34.50,
-    'y_max' : -75.00
+    'x_min': 34.00,
+    'y_min': -76.0,
+    'x_max': 34.50,
+    'y_max': -75.00
 }
 
 #Create a variable pointing to the data file
@@ -26,7 +26,7 @@ with open(file_name,'r') as f:
 	line_list = f.readlines()
 
 #Pretend we read one line of data from the file
-for lineString in line_list[1:]: #loop through line list, skip header line
+for lineString in line_list[1:]:
 
     # Use the split command to parse the items in lineString into a list object
     line_data = lineString.split(',')
@@ -35,18 +35,16 @@ for lineString in line_list[1:]: #loop through line list, skip header line
     event_id = line_data[0]   # Argos tracking event ID ("event-id")
     timestamp = line_data[2]  # Observation date ("timestamp")
     lc  = line_data[14]        # Observation location class ("argos:lc")
-    if lc not in ['"1"', '"2"', '"3"']:
-        lineString = f.readline()  #update line string; continue to next line 
-        continue #skip records that don't have coordinate info
+    if lc not in ['"1"','"2"','"3"']:  continue
     lat = float(line_data[4])        # Observation latitude  ("location-lat")
     lon = float(line_data[3])        # Observation longitude ("location-lon")
     tag_id = line_data[-3]     # Tag identifier ("tag-local-identifier")
     
-    #Evaluate latitude and longitude conditions (boolean values)
+    #Evaluate latitude and longitude conditions
     lat_condition = the_box['y_min'] < lat < the_box['y_max']
     lon_condition = the_box['x_min'] < lon < the_box['x_max']
 
-    #Report whether the point falls within the box
+    #Report the status of the points
     if lat_condition & lon_condition:
         print(f'Record {event_id}: {tag_id} was IN the box at {timestamp}')
     else:
